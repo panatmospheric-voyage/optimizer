@@ -1,0 +1,56 @@
+unit kg = 1000 * g;
+unit N = kg * m / s^2;
+unit km = 1000 * m;
+delta g = 0.001;
+property gravity = -9.81 m/s;
+assembly pterodactyl_sustainer {
+    assembly payload {
+        parameter mass (0, 5) kg;
+        summarize mass;
+    }
+    enum motor {
+        property mass;
+        property impulse;
+        property cost;
+        value H283 {
+            mass = 247 g;
+            impulse = 210. N*s;
+            cost = 40 USD;
+        }
+        value L1090 {
+            mass = 2432 g;
+            impulse = 2671 N * s;
+            cost = 220 USD;
+        }
+        value M795 {
+            mass = 8492g;
+            impulse = 10,133.0N*s;
+            cost = 350 USD;
+        }
+    }
+    parameter dead_mass (0, 20] kg;
+    // Automatically do unit conversions for us on this
+    property total_mass = payload.mass + motor.mass + dead_mass;
+    property initial_speed = motor.impulse / total_mass;
+    // Implicit expressions
+    property ascent_time <- 0 = initial_speed + gravity * ascent_time;
+    property altitude = initial_speed * ascent_time + 1/2 * gravity * ascent_time^2;
+    require altitude > 50 km;
+    summarize motor;
+    summarize altitude;
+    summarize cost;
+}
+property tripoli_cert_needed;
+summarize tripoli_cert_needed;
+if pterodactyl_sustainer.motor.impulse < 160 N*s {
+    tripoli_cert_needed = "None";
+} else if pterodactyl_sustainer.motor.impulse < 640 N*s {
+    tripoli_cert_needed = "L1";
+} else if pterodactyl_sustainer.motor.impulse < 5120 N*s {
+    tripoli_cert_needed = "L2";
+} else if pterodactyl_sustainer.motor.impulse < 40960 N*s {
+    tripoli_cert_needed = "L3";
+} else {
+    tripoli_cert_needed = "Class 3 from FAA";
+}
+minimize pterodactyl_sustainer.cost;
