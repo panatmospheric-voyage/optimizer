@@ -1,6 +1,7 @@
 package libpvoptimizer
 
 import "./evaluator"
+import "./errors"
 
 // IReporter represents the interface for the reporter layer.  This is the sixth
 // layer in the optimization pipeline and it generates the report from the
@@ -8,7 +9,7 @@ import "./evaluator"
 // to be saved.
 type IReporter interface {
 	// Init initializes the layer and is called from the pipeline layer
-	Init(evaluator IEvaluator, resultwriter IResultWriter);
+	Init(evaluator IEvaluator, resultwriter IResultWriter, e errors.IErrorHandler);
 	// Report generates the report to save
 	Report(model evaluator.OptimizedModel);
 }

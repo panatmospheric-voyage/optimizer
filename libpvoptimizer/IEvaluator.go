@@ -1,6 +1,7 @@
 package libpvoptimizer
 
 import "./parser"
+import "./errors"
 
 // IEvaluator represents the interface for the evaluator layer.  This is the
 // fifth layer in the optimization pipeline and it performs the actual
@@ -8,7 +9,7 @@ import "./parser"
 // reporter layer for a report to be generated.
 type IEvaluator interface {
 	// Init initializes the layer and is called from the pipeline layer
-	Init(parser IParser, reporter IReporter);
+	Init(parser IParser, reporter IReporter, e errors.IErrorHandler);
 	// Evaluate evaluates the model and optimizes it
 	Evaluate(model parser.Model);
 }
