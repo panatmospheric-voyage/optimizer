@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"os"
 
+	"../libpvoptimizer/lexer/mock"
 	"../libpvoptimizer/pipeline"
 	resultwriter "../libpvoptimizer/resultwriter/def"
 	sourcereader "../libpvoptimizer/sourcereader/def"
-	"../libpvoptimizer/tokenizer/mock"
 )
 
 func main() {
 	p := pipeline.CreateDefault()
-	p.Tokenizer = new(mock.Tokenizer)
+	p.Lexer = new(mock.Lexer)
 	outFile := flag.String("o", "", "Output file")
 	flag.Parse()
 	if *outFile != "" {
