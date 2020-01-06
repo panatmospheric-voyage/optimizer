@@ -1,7 +1,7 @@
 package lexer
 
 // Function represents a mathematical function
-type Function int;
+type Function int
 
 const (
 	// Sine function

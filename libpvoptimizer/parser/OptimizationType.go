@@ -1,7 +1,7 @@
 package parser
 
 // OptimizationType represents the type of optimization that is occuring
-type OptimizationType int;
+type OptimizationType int
 
 const (
 	// Minimization optimization

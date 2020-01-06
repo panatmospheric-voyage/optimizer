@@ -1,9 +1,9 @@
 package errors
 
 // ErrorCode is the code for an error
-type ErrorCode int;
+type ErrorCode int
 
-var strings []string = []string {
+var strings []string = []string{
 	"Function '%s' not implemented.",
 }
 
@@ -14,5 +14,5 @@ const (
 
 // String returns the format string for an error
 func (e ErrorCode) String() string {
-	return strings[e];
+	return strings[e]
 }

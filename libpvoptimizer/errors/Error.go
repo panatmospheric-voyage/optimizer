@@ -19,5 +19,5 @@ type Error struct {
 
 // FormatError returns the formatted error description
 func (e Error) FormatError() string {
-	return fmt.Sprintf(e.Code.String(), e.Arguments);
+	return fmt.Sprintf(e.Code.String(), e.Arguments)
 }

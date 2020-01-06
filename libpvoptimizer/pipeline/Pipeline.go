@@ -1,6 +1,6 @@
 package pipeline
 
-import ".."
+import libpvoptimizer ".."
 
 // Pipeline represents the optimization pipeline
 type Pipeline struct {

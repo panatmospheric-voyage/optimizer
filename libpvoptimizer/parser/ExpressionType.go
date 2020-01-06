@@ -1,7 +1,7 @@
 package parser
 
 // ExpressionType is the type of an expression
-type ExpressionType int;
+type ExpressionType int
 
 const (
 	// Constant value

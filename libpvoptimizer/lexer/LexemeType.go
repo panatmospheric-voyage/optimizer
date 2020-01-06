@@ -1,7 +1,7 @@
 package lexer
 
 // LexemeType represents a type of a lexeme
-type LexemeType int;
+type LexemeType int
 
 const (
 	// KeywordLiteral represents a language keyword or symbol

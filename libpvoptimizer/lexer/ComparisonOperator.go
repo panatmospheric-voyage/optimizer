@@ -1,7 +1,7 @@
 package lexer
 
 // ComparisonOperator represents a symbol that is used to compare two numbers
-type ComparisonOperator int;
+type ComparisonOperator int
 
 const (
 	// LessThan operator

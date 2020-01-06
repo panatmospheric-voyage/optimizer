@@ -1,7 +1,7 @@
 package lexer
 
 // Keyword represents which keyword a lexeme is
-type Keyword int;
+type Keyword int
 
 const (
 	// UnitKeyword keyword

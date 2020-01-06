@@ -1,7 +1,7 @@
 package lexer
 
 // ExpressionUnitType represents the type of one token in an expression
-type ExpressionUnitType int;
+type ExpressionUnitType int
 
 const (
 	// ExpressionNumber is a literal number
