@@ -9,7 +9,7 @@ type IErrorHandler interface {
 // NoImpl reports a not implemented error
 func NoImpl(handler IErrorHandler, fn string) {
 	handler.Handle(Error{
-		Arguments: []string{fn},
+		Arguments: []interface{}{fn},
 		Code:      NotImplemented,
 		LineNo:    -1,
 		CharNo:    -1,

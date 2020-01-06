@@ -5,7 +5,7 @@ import "fmt"
 // Error represents an error in the code
 type Error struct {
 	// Arguments to the string format for the error
-	Arguments []string
+	Arguments []interface{}
 	// Code of error
 	Code ErrorCode
 	// LineNo contains the line number the token was found on
@@ -19,5 +19,5 @@ type Error struct {
 
 // FormatError returns the formatted error description
 func (e Error) FormatError() string {
-	return fmt.Sprintf(e.Code.String(), e.Arguments)
+	return fmt.Sprintf(e.Code.String(), e.Arguments...)
 }
