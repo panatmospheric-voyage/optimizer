@@ -1,6 +1,8 @@
 package libpvoptimizer
 
 import (
+	"sync"
+
 	"./errors"
 	"./lexer"
 )
@@ -11,7 +13,7 @@ import (
 // model to the evaluator to optimize it.
 type IParser interface {
 	// Init initializes the layer and is called from the pipeline layer
-	Init(lexer ILexer, evaluator IEvaluator, e errors.IErrorHandler)
+	Init(lexer ILexer, evaluator IEvaluator, e errors.IErrorHandler, wg *sync.WaitGroup)
 	// Stream accepts a statement and processes it.
 	Stream(statement lexer.Statement)
 	// End is called by the lexer once all statements have been streamed into

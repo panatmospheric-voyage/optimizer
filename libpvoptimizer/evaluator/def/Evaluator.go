@@ -1,6 +1,8 @@
 package def
 
 import (
+	"sync"
+
 	libpvoptimizer "../.."
 	"../../errors"
 	"../../parser"
@@ -12,7 +14,7 @@ type Evaluator struct {
 }
 
 // Init initializes the layer and is called from the pipeline layer
-func (ev Evaluator) Init(parser libpvoptimizer.IParser, reporter libpvoptimizer.IReporter, e errors.IErrorHandler) {
+func (ev Evaluator) Init(parser libpvoptimizer.IParser, reporter libpvoptimizer.IReporter, e errors.IErrorHandler, wg *sync.WaitGroup) {
 	ev.handler = e
 	errors.NoImpl(ev.handler, "Evaluator.Init")
 }

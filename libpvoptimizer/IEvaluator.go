@@ -1,6 +1,8 @@
 package libpvoptimizer
 
 import (
+	"sync"
+
 	"./errors"
 	"./parser"
 )
@@ -11,7 +13,7 @@ import (
 // reporter layer for a report to be generated.
 type IEvaluator interface {
 	// Init initializes the layer and is called from the pipeline layer
-	Init(parser IParser, reporter IReporter, e errors.IErrorHandler)
+	Init(parser IParser, reporter IReporter, e errors.IErrorHandler, wg *sync.WaitGroup)
 	// Evaluate evaluates the model and optimizes it
 	Evaluate(model parser.Model)
 }

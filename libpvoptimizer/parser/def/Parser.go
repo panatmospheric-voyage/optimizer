@@ -1,6 +1,8 @@
 package def
 
 import (
+	"sync"
+
 	libpvoptimizer "../.."
 	"../../errors"
 	"../../lexer"
@@ -12,7 +14,7 @@ type Parser struct {
 }
 
 // Init initializes the layer and is called from the pipeline layer
-func (ps Parser) Init(lexer libpvoptimizer.ILexer, evaluator libpvoptimizer.IEvaluator, e errors.IErrorHandler) {
+func (ps Parser) Init(lexer libpvoptimizer.ILexer, evaluator libpvoptimizer.IEvaluator, e errors.IErrorHandler, wg *sync.WaitGroup) {
 	ps.handler = e
 	errors.NoImpl(ps.handler, "Parser.Init")
 }

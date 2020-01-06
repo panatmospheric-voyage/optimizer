@@ -1,6 +1,8 @@
 package libpvoptimizer
 
 import (
+	"sync"
+
 	"./errors"
 	"./sourcereader"
 )
@@ -10,7 +12,7 @@ import (
 // from the filesystem (in the default implementation).
 type ISourceReader interface {
 	// Init initializes the layer and is called from the pipeline layer
-	Init(tokenizer ITokenizer, e errors.IErrorHandler)
+	Init(tokenizer ITokenizer, e errors.IErrorHandler, wg *sync.WaitGroup)
 	// ReadFile starts the reading of a different source file.  This is used
 	// when reading an included file.  The id is used in the lexer to
 	// reconstruct all the file parts in order.

@@ -1,6 +1,8 @@
 package def
 
 import (
+	"sync"
+
 	libpvoptimizer "../.."
 	"../../errors"
 	"../../sourcereader"
@@ -8,13 +10,14 @@ import (
 
 // Tokenizer is the default implementation of ITokenizer
 type Tokenizer struct {
-	handler errors.IErrorHandler
+	handler      errors.IErrorHandler
+	sourcereader libpvoptimizer.ISourceReader
 }
 
 // Init initializes the layer and is called from the pipeline layer
-func (tk Tokenizer) Init(sourcereader libpvoptimizer.ISourceReader, lexer libpvoptimizer.ILexer, e errors.IErrorHandler) {
+func (tk *Tokenizer) Init(sourcereader libpvoptimizer.ISourceReader, lexer libpvoptimizer.ILexer, e errors.IErrorHandler, wg *sync.WaitGroup) {
 	tk.handler = e
-	errors.NoImpl(tk.handler, "Tokenizer.Init")
+	tk.sourcereader = sourcereader
 }
 
 // Stream accepts a buffer and tokenizes the contents, then streams those
@@ -42,5 +45,5 @@ func (tk Tokenizer) EndStream(id int) {
 // reconstruct all the file parts in order.  This call is proxied down to
 // the source reader layer.
 func (tk Tokenizer) ReadFile(filename string, id int, sourceType sourcereader.SourceType) {
-	errors.NoImpl(tk.handler, "Tokenizer.ReadFile")
+	tk.sourcereader.ReadFile(filename, id, sourceType)
 }

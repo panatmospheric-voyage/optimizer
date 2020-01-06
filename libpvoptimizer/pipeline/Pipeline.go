@@ -1,6 +1,8 @@
 package pipeline
 
 import (
+	"sync"
+
 	libpvoptimizer ".."
 	"../errors"
 	errorhandler "../errors/def"
@@ -33,27 +35,29 @@ type Pipeline struct {
 	ErrorHandler errors.IErrorHandler
 }
 
-// Run runs the pipeline (asynchronously)
+// Run runs the pipeline
 func (p Pipeline) Run() {
-	p.SourceReader.Init(p.Tokenizer, p.ErrorHandler)
-	p.Tokenizer.Init(p.SourceReader, p.Lexer, p.ErrorHandler)
-	p.Lexer.Init(p.Tokenizer, p.Parser, p.ErrorHandler)
-	p.Parser.Init(p.Lexer, p.Evaluator, p.ErrorHandler)
-	p.Evaluator.Init(p.Parser, p.Reporter, p.ErrorHandler)
-	p.Reporter.Init(p.Evaluator, p.ResultWriter, p.ErrorHandler)
-	p.ResultWriter.Init(p.Reporter, p.ErrorHandler)
+	var wg sync.WaitGroup
+	p.SourceReader.Init(p.Tokenizer, p.ErrorHandler, &wg)
+	p.Tokenizer.Init(p.SourceReader, p.Lexer, p.ErrorHandler, &wg)
+	p.Lexer.Init(p.Tokenizer, p.Parser, p.ErrorHandler, &wg)
+	p.Parser.Init(p.Lexer, p.Evaluator, p.ErrorHandler, &wg)
+	p.Evaluator.Init(p.Parser, p.Reporter, p.ErrorHandler, &wg)
+	p.Reporter.Init(p.Evaluator, p.ResultWriter, p.ErrorHandler, &wg)
+	p.ResultWriter.Init(p.Reporter, p.ErrorHandler, &wg)
+	wg.Wait()
 }
 
 // CreateDefault creates a pipeline with the default implementations
 func CreateDefault() Pipeline {
 	return Pipeline{
-		SourceReader: sourcereader.SourceReader{},
-		Tokenizer:    tokenizer.Tokenizer{},
-		Lexer:        lexer.Lexer{},
-		Parser:       parser.Parser{},
-		Evaluator:    evaluator.Evaluator{},
-		Reporter:     reporter.Reporter{},
-		ResultWriter: resultwriter.ResultWriter{},
-		ErrorHandler: errorhandler.ErrorHandler{},
+		SourceReader: new(sourcereader.SourceReader),
+		Tokenizer:    new(tokenizer.Tokenizer),
+		Lexer:        new(lexer.Lexer),
+		Parser:       new(parser.Parser),
+		Evaluator:    new(evaluator.Evaluator),
+		Reporter:     new(reporter.Reporter),
+		ResultWriter: new(resultwriter.ResultWriter),
+		ErrorHandler: new(errorhandler.ErrorHandler),
 	}
 }

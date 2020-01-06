@@ -1,6 +1,8 @@
 package libpvoptimizer
 
 import (
+	"sync"
+
 	"./errors"
 	"./tokenizer"
 )
@@ -12,7 +14,7 @@ import (
 // lexemes are streamed into the parser layer.
 type ILexer interface {
 	// Init initializes the layer and is called from the pipeline layer
-	Init(tokenizer ITokenizer, parser IParser, e errors.IErrorHandler)
+	Init(tokenizer ITokenizer, parser IParser, e errors.IErrorHandler, wg *sync.WaitGroup)
 	// Stream accepts a token and processes it.  If it is the end of a
 	// statement, it then streams it to the parser layer.
 	Stream(token tokenizer.Token, id int)

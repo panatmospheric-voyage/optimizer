@@ -1,6 +1,8 @@
 package libpvoptimizer
 
 import (
+	"sync"
+
 	"./errors"
 	"./sourcereader"
 )
@@ -10,7 +12,7 @@ import (
 // from the source reader into tokens.
 type ITokenizer interface {
 	// Init initializes the layer and is called from the pipeline layer
-	Init(sourcereader ISourceReader, lexer ILexer, e errors.IErrorHandler)
+	Init(sourcereader ISourceReader, lexer ILexer, e errors.IErrorHandler, wg *sync.WaitGroup)
 	// Stream accepts a buffer and tokenizes the contents, then streams those
 	// tokens to the lexer.  The id is used to identify different files that are
 	// being tokenized at the same time (for includes).

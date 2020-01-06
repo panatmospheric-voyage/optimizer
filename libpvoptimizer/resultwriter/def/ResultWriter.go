@@ -1,6 +1,8 @@
 package def
 
 import (
+	"sync"
+
 	libpvoptimizer "../.."
 	"../../errors"
 )
@@ -11,7 +13,7 @@ type ResultWriter struct {
 }
 
 // Init initializes the layer and is called from the pipeline layer
-func (rw ResultWriter) Init(reporter libpvoptimizer.IReporter, e errors.IErrorHandler) {
+func (rw ResultWriter) Init(reporter libpvoptimizer.IReporter, e errors.IErrorHandler, wg *sync.WaitGroup) {
 	rw.handler = e
 	errors.NoImpl(rw.handler, "ResultWriter.Init")
 }

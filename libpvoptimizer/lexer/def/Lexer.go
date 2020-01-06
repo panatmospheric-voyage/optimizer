@@ -1,8 +1,11 @@
 package def
 
 import (
+	"sync"
+
 	libpvoptimizer "../.."
 	"../../errors"
+	"../../sourcereader"
 	"../../tokenizer"
 )
 
@@ -12,9 +15,9 @@ type Lexer struct {
 }
 
 // Init initializes the layer and is called from the pipeline layer
-func (lx Lexer) Init(tokenizer libpvoptimizer.ITokenizer, parser libpvoptimizer.IParser, e errors.IErrorHandler) {
+func (lx *Lexer) Init(tokenizer libpvoptimizer.ITokenizer, parser libpvoptimizer.IParser, e errors.IErrorHandler, wg *sync.WaitGroup) {
 	lx.handler = e
-	errors.NoImpl(lx.handler, "Lexer.Init")
+	tokenizer.ReadFile("", 0, sourcereader.DefaultSource)
 }
 
 // Stream accepts a token and processes it.  If it is the end of a
