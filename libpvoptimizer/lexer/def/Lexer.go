@@ -299,15 +299,21 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 			}
 			break
 		case readPropertyEquals:
-			if token.Text == "=" {
+			switch token.Text {
+			case "=":
 				lexeme = &lexer.Lexeme{
 					Type:    lexer.KeywordLiteral,
 					Keyword: lexer.EqualsKeyword,
 				}
 				lx.state = readExpression
-			} else {
+				break
+			case ";":
+				lx.finishStatement()
+				break
+			default:
 				lx.err(token, errors.ExpectedEquals, token.Text)
 				lx.finishStatement()
+				break
 			}
 			break
 		case readExpression:

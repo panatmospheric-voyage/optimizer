@@ -1,6 +1,6 @@
-unit kg = 1000 * g;
-unit N = kg * m / s^2;
-unit km = 1000 * m;
+unit kg = 1000 g;
+unit N = kg *m / s^2;
+unit km = 1000 m;
 property gravity = -9.81 m/s;
 assembly pterodactyl_sustainer {
     assembly payload {
