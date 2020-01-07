@@ -45,8 +45,9 @@ func (tk *Tokenizer) Stream(data []byte, l int, id int) {
 	s := tk.streams[id]
 	buf := append(s.data, data[0:l]...)
 	wasSlash := false
+	wasArrow := false
 	commentLine := false
-	for len(buf) > 0 {
+	for ; len(buf) > 0; s.char++ {
 		if buf[0] == '\n' {
 			commentLine = false
 			s.line++
@@ -72,6 +73,26 @@ func (tk *Tokenizer) Stream(data []byte, l int, id int) {
 						FileName: s.filename,
 					}, id)
 					wasSlash = false
+				}
+				if wasArrow {
+					wasArrow = false
+					if buf[0] == '-' {
+						tk.lexer.Stream(tokenizer.Token{
+							Text:     "<-",
+							LineNo:   s.line,
+							CharNo:   s.char - 1,
+							FileName: s.filename,
+						}, id)
+						buf = buf[1:]
+						continue
+					} else {
+						tk.lexer.Stream(tokenizer.Token{
+							Text:     "<",
+							LineNo:   s.line,
+							CharNo:   s.char - 1,
+							FileName: s.filename,
+						}, id)
+					}
 				}
 				if buf[0] == ' ' || buf[0] == '\t' || buf[0] == '\r' {
 					buf = buf[1:]
@@ -117,6 +138,9 @@ func (tk *Tokenizer) Stream(data []byte, l int, id int) {
 						buf = b
 						break
 					}
+				} else if buf[0] == '<' {
+					wasArrow = true
+					buf = buf[1:]
 				} else {
 					tk.lexer.Stream(tokenizer.Token{
 						Text:     fmt.Sprintf("%c", buf[0]),
@@ -127,7 +151,6 @@ func (tk *Tokenizer) Stream(data []byte, l int, id int) {
 					buf = buf[1:]
 				}
 			}
-			s.char++
 		}
 	}
 	if wasSlash {

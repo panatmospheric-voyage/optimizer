@@ -71,17 +71,17 @@ const (
 	// ExpectedCondition error
 	ExpectedCondition ErrorCode = 18
 	// ExpectedExpMul error
-	ExpectedExpMul ErrorCode = 20
+	ExpectedExpMul ErrorCode = 19
 	// ExpectedMul error
-	ExpectedMul ErrorCode = 22
+	ExpectedMul ErrorCode = 20
 	// ExpectedOperator error
-	ExpectedOperator ErrorCode = 23
+	ExpectedOperator ErrorCode = 21
 	// ExpectedExpression error
-	ExpectedExpression ErrorCode = 24
+	ExpectedExpression ErrorCode = 22
 	// ExpectedParenthesis error
-	ExpectedParenthesis ErrorCode = 25
+	ExpectedParenthesis ErrorCode = 23
 	// UnexpectedEndBlock error
-	UnexpectedEndBlock ErrorCode = 26
+	UnexpectedEndBlock ErrorCode = 24
 )
 
 // String returns the format string for an error

@@ -53,7 +53,7 @@ func (ex *expressionReader) readOperator(token tokenizer.Token, e **lexer.Expres
 	case "^":
 		op = lexer.Exponentiation
 		break
-	case ";":
+	case ";", "=":
 		return slComplete
 	case ")":
 		ex.exprStack.Pop()

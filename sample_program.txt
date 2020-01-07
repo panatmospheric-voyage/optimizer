@@ -23,7 +23,7 @@ assembly pterodactyl_sustainer {
         }
         value M795 {
             mass = 8492g;
-            impulse = 10,133.0N*s;
+            impulse = 10133.0N*s;
             cost = 350 USD;
         }
     }

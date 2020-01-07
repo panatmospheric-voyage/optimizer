@@ -29,4 +29,5 @@ const (
 	readIfCondition2          lexerState = 23
 	readIfRHS                 lexerState = 24
 	readElse                  lexerState = 25
+	readPropertyLHS           lexerState = 26
 )

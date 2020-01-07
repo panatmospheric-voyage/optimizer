@@ -307,6 +307,13 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 				}
 				lx.state = readExpression
 				break
+			case "<-":
+				lexeme = &lexer.Lexeme{
+					Type:    lexer.KeywordLiteral,
+					Keyword: lexer.AssignArrow,
+				}
+				lx.state = readPropertyLHS
+				break
 			case ";":
 				lx.finishStatement()
 				break
@@ -702,6 +709,36 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 				break
 			}
 			break
+		case readPropertyLHS:
+			l := sc.lexemes[len(sc.lexemes)-1]
+			if l.Type != lexer.Expression {
+				lexeme = &lexer.Lexeme{
+					Type:       lexer.Expression,
+					Expression: make([]lexer.ExpressionUnit, 0),
+				}
+				lx.expr.Reset(&lexeme.Expression)
+			}
+			switch lx.expr.Read(token) {
+			case slValid:
+				break
+			case slComplete:
+				if token.Text != "=" {
+					lx.err(token, errors.ExpectedEquals, token.Text)
+				}
+				lexeme = &lexer.Lexeme{
+					Type:    lexer.KeywordLiteral,
+					Keyword: lexer.EqualsKeyword,
+				}
+				lx.state = readExpression
+				break
+			case slError:
+				lx.finishStatement()
+				break
+			default:
+				lx.err(token, errors.MissingCase)
+				lx.finishStatement()
+				break
+			}
 		default:
 			lx.err(token, errors.StateError, lx.state, "lexerState")
 			lx.state = statementStart
