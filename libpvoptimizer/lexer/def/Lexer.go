@@ -86,6 +86,14 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 		var lexeme *lexer.Lexeme = nil
 		switch lx.state {
 		case statementStart:
+			if sc.wasIf {
+				if token.Text == "else" {
+					lx.state = readElse
+					break
+				} else {
+					sc.wasIf = false
+				}
+			}
 			switch token.Text {
 			case ";":
 				lx.err(token, errors.EmptyStatement)
@@ -172,11 +180,7 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 				sc.wasIf = true
 				break
 			case "else":
-				if sc.wasIf {
-					lx.state = readElse
-				} else {
-					lx.err(token, errors.UnexpectedElse)
-				}
+				lx.err(token, errors.UnexpectedElse)
 				break
 			case "}":
 				if len(sc.lexemes) != 0 {
@@ -190,8 +194,8 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 						lm.SwitchBlocks[len(lm.SwitchBlocks)-1].Statements = sc.statements
 					} else {
 						lm.Statements = sc.statements
+						lx.finishStatement()
 					}
-					lx.finishStatement()
 				} else {
 					lx.err(token, errors.UnexpectedEndBlock)
 				}

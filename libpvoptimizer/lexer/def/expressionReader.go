@@ -53,13 +53,15 @@ func (ex *expressionReader) readOperator(token tokenizer.Token, e **lexer.Expres
 	case "^":
 		op = lexer.Exponentiation
 		break
-	case ";", "=":
-		return slComplete
 	case ")":
 		ex.exprStack.Pop()
 		ex.state = readOperator
 		return slValid
 	default:
+		f := token.Text[0]
+		if len(token.Text) == 1 && (f < 'a' || f > 'z') && (f < 'A' || f > 'Z') && (f < '0' || f > '9') {
+			return slComplete
+		}
 		return slError
 	}
 	*e = &lexer.ExpressionUnit{
