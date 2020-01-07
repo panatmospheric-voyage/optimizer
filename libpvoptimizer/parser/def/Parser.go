@@ -29,8 +29,9 @@ func (ps *Parser) Init(lexer libpvoptimizer.ILexer, evaluator libpvoptimizer.IEv
 		UniversalProperties: make([]parser.Property, 0),
 		Enumerations:        make([]parser.Enumeration, 0),
 		Requirements:        make([]parser.Requirement, 0),
-		Type:                parser.NoOptimize,
-		Variable:            make([]string, 0),
+		Optimization: parser.Optimization{
+			Type: parser.NoOptimize,
+		},
 	}
 	initPatterns()
 }

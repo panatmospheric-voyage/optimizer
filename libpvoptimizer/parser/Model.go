@@ -15,8 +15,6 @@ type Model struct {
 	Enumerations []Enumeration
 	// Requirements contains all property requirements
 	Requirements []Requirement
-	// Type of optimization to perform
-	Type OptimizationType
-	// Variable to optimize
-	Variable []string
+	// Optimization options
+	Optimization Optimization
 }

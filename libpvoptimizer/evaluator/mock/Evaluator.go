@@ -166,7 +166,7 @@ func (ev Evaluator) Evaluate(model parser.Model) {
 		fmt.Println()
 	}
 	fmt.Println()
-	switch model.Type {
+	switch model.Optimization.Type {
 	case parser.NoOptimize:
 		fmt.Println("No optimization requested.")
 		return
@@ -180,5 +180,6 @@ func (ev Evaluator) Evaluate(model parser.Model) {
 		fmt.Print("Zero ")
 		break
 	}
-	fmt.Println(strings.Join(model.Variable, "."))
+	fmt.Println(strings.Join(model.Optimization.Variable, "."))
+	fmt.Printf("Mean = %f, Accuracy = %f, Iterations = %d, Seed = %d\n", model.Optimization.Mean, model.Optimization.Accuracy, model.Optimization.Iterations, model.Optimization.Seed)
 }

@@ -29,4 +29,7 @@ const (
 	readIfRHS                 lexerState = 23
 	readElse                  lexerState = 24
 	readPropertyLHS           lexerState = 25
+	readOptimizeOpen          lexerState = 26
+	readOptimizeParam         lexerState = 27
+	readOptimizeComma         lexerState = 28
 )

@@ -37,6 +37,8 @@ var strings []string = []string{
 	"Attempt to optimize %s, which is a parameter, not a property.",
 	"Statement %s requires variable as parameter.",
 	"Unknown variable %s.",
+	"Expected '[' but got '%s'.",
+	"Expected ']' or ',' but got '%s'.",
 }
 
 const (
@@ -106,6 +108,10 @@ const (
 	UnaryExpectedVariable ErrorCode = 31
 	// UnknownVariable error
 	UnknownVariable ErrorCode = 32
+	// ExpectedOpenSquare error
+	ExpectedOpenSquare ErrorCode = 33
+	// ExpectedEndSquareOrComma error
+	ExpectedEndSquareOrComma ErrorCode = 34
 )
 
 // String returns the format string for an error

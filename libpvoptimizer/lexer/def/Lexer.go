@@ -147,21 +147,24 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 				switch token.Text {
 				case "summarize":
 					lexeme.Keyword = lexer.SummarizeKeyword
+					lx.state = readExpression
 					break
 				case "minimize":
 					lexeme.Keyword = lexer.MinimizeKeyword
+					lx.state = readOptimizeOpen
 					break
 				case "maximize":
 					lexeme.Keyword = lexer.MaximizeKeyword
+					lx.state = readOptimizeOpen
 					break
 				case "zero":
 					lexeme.Keyword = lexer.ZeroKeyword
+					lx.state = readOptimizeOpen
 					break
 				default:
 					lx.err(token, errors.MissingCase)
 					break
 				}
-				lx.state = readExpression
 				break
 			case "require":
 				lexeme = &lexer.Lexeme{
@@ -715,6 +718,49 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 				lx.finishStatement()
 				break
 			}
+		case readOptimizeOpen:
+			if token.Text == "[" {
+				lexeme = &lexer.Lexeme{
+					Type:    lexer.KeywordLiteral,
+					Keyword: lexer.InclusiveOpen,
+				}
+				lx.state = readOptimizeParam
+			} else {
+				lx.err(token, errors.ExpectedOpenSquare, token.Text)
+			}
+			break
+		case readOptimizeParam:
+			if isNumber(token.Text) {
+				lexeme = &lexer.Lexeme{
+					Type: lexer.NumberLiteral,
+					Name: token.Text,
+				}
+				lx.state = readOptimizeComma
+			} else {
+				lx.err(token, errors.ExpectedNumber, token.Text)
+			}
+			break
+		case readOptimizeComma:
+			switch token.Text {
+			case "]":
+				lexeme = &lexer.Lexeme{
+					Type:    lexer.KeywordLiteral,
+					Keyword: lexer.InclusiveClose,
+				}
+				lx.state = readExpression
+				break
+			case ",":
+				lexeme = &lexer.Lexeme{
+					Type:    lexer.KeywordLiteral,
+					Keyword: lexer.CommaKeyword,
+				}
+				lx.state = readOptimizeParam
+				break
+			default:
+				lx.err(token, errors.ExpectedEndSquareOrComma, token.Text)
+				break
+			}
+			break
 		default:
 			lx.err(token, errors.StateError, lx.state, "lexerState")
 			lx.state = statementStart

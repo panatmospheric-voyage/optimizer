@@ -1,6 +1,7 @@
 package def
 
 import (
+	"strconv"
 	"strings"
 
 	parser ".."
@@ -23,11 +24,12 @@ func getNamedObject(model *parser.Model, name []string) (*parser.Property, *pars
 }
 
 func unaryGetObject(model *parser.Model, statement lexer.Statement, scope []string, e errors.IErrorHandler, stName string) (*parser.Property, *parser.Parameter, []string) {
-	if len(statement.Lexemes[1].Expression) != 1 || statement.Lexemes[1].Expression[0].Type != lexer.Variable {
+	l := statement.Lexemes[len(statement.Lexemes)-1]
+	if len(l.Expression) != 1 || l.Expression[0].Type != lexer.Variable {
 		err(statement, e, errors.UnaryExpectedVariable, stName)
 		return nil, nil, []string{}
 	}
-	name := append(scope, statement.Lexemes[1].Expression[0].Text...)
+	name := append(scope, l.Expression[0].Text...)
 	prop, param := getNamedObject(model, name)
 	if prop == nil && param == nil {
 		err(statement, e, errors.UnknownVariable, strings.Join(name, "."))
@@ -46,7 +48,7 @@ func parseSummarize(model *parser.Model, statement lexer.Statement, scope []stri
 }
 
 func parseOptimization(model *parser.Model, statement lexer.Statement, scope []string, e errors.IErrorHandler, stName string, t parser.OptimizationType) {
-	if model.Type != parser.NoOptimize {
+	if model.Optimization.Type != parser.NoOptimize {
 		err(statement, e, errors.MultipleOptimizations)
 	} else {
 		prop, param, name := unaryGetObject(model, statement, scope, e, stName)
@@ -55,8 +57,40 @@ func parseOptimization(model *parser.Model, statement lexer.Statement, scope []s
 				err(statement, e, errors.OptimizeParameter, strings.Join(name, "."))
 			}
 		} else {
-			model.Type = t
-			model.Variable = name
+			mean, er := parser.ParseNumber(statement.Lexemes[2].Name)
+			if er != nil {
+				err(statement, e, errors.NumberParseError, statement.Lexemes[2].Name, er)
+				mean = 1
+			}
+			acc, er := parser.ParseNumber(statement.Lexemes[4].Name)
+			if er != nil {
+				err(statement, e, errors.NumberParseError, statement.Lexemes[4].Name, er)
+				acc = 0.001
+			}
+			var iters int64 = 0
+			var seed int64 = 0
+			if len(statement.Lexemes) >= 9 {
+				iters, er = strconv.ParseInt(statement.Lexemes[6].Name, 10, 32)
+				if er != nil {
+					err(statement, e, errors.NumberParseError, statement.Lexemes[6].Name, er)
+					iters = 0
+				}
+				if len(statement.Lexemes) == 11 {
+					seed, er = strconv.ParseInt(statement.Lexemes[8].Name, 10, 64)
+					if er != nil {
+						err(statement, e, errors.NumberParseError, statement.Lexemes[8].Name, er)
+						seed = 0
+					}
+				}
+			}
+			model.Optimization = parser.Optimization{
+				Type:       t,
+				Variable:   name,
+				Mean:       mean,
+				Accuracy:   acc,
+				Iterations: int(iters),
+				Seed:       seed,
+			}
 		}
 	}
 }
