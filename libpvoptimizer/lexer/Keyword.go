@@ -38,6 +38,4 @@ const (
 	MaximizeKeyword = 15
 	// CommaKeyword keyword
 	CommaKeyword = 16
-	// DereferenceKeyword keyword
-	DereferenceKeyword = 17
 )

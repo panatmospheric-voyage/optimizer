@@ -157,7 +157,7 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 					lx.err(token, errors.MissingCase)
 					break
 				}
-				lx.state = readUnaryStatementName
+				lx.state = readExpression
 				break
 			case "require":
 				lexeme = &lexer.Lexeme{
@@ -460,38 +460,6 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 			default:
 				lx.err(token, errors.ExpectedRangeClose, token.Text)
 				lx.finishStatement()
-				break
-			}
-			break
-		case readUnaryStatementName:
-			switch token.Text {
-			case ";":
-				lx.finishStatement()
-			case ".":
-				l := sc.lexemes[len(sc.lexemes)-1]
-				if l.Type == lexer.Identifier {
-					lexeme = &lexer.Lexeme{
-						Type:    lexer.KeywordLiteral,
-						Keyword: lexer.DereferenceKeyword,
-					}
-				} else {
-					lx.err(token, errors.ExpectedIdentifier, ".")
-					lx.finishStatement()
-				}
-				break
-			default:
-				l := sc.lexemes[len(sc.lexemes)-1]
-				if l.Type != lexer.Identifier {
-					if isIdentifier(token.Text) {
-						lexeme = &lexer.Lexeme{
-							Type: lexer.Identifier,
-							Name: token.Text,
-						}
-					}
-				} else {
-					lx.err(token, errors.UnexpectedIdentifier, token.Text)
-					lx.finishStatement()
-				}
 				break
 			}
 			break

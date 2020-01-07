@@ -20,14 +20,13 @@ const (
 	readParameterDelim        lexerState = 14
 	readParameterUpper        lexerState = 15
 	readParameterClose        lexerState = 16
-	readUnaryStatementName    lexerState = 17
-	readRequirementName       lexerState = 18
-	readRequirementCondition  lexerState = 19
-	readRequirementCondition2 lexerState = 20
-	readIfLHS                 lexerState = 21
-	readIfCondition           lexerState = 22
-	readIfCondition2          lexerState = 23
-	readIfRHS                 lexerState = 24
-	readElse                  lexerState = 25
-	readPropertyLHS           lexerState = 26
+	readRequirementName       lexerState = 17
+	readRequirementCondition  lexerState = 18
+	readRequirementCondition2 lexerState = 19
+	readIfLHS                 lexerState = 20
+	readIfCondition           lexerState = 21
+	readIfCondition2          lexerState = 22
+	readIfRHS                 lexerState = 23
+	readElse                  lexerState = 24
+	readPropertyLHS           lexerState = 25
 )
