@@ -16,18 +16,18 @@ const (
 	Secant Function = 4
 	// Cotangent function
 	Cotangent Function = 5
-	// Arcsine function
-	Arcsine Function = 6
-	// Arccosine function
-	Arccosine Function = 7
-	// Arctangent function
-	Arctangent Function = 8
-	// Arccosecant function
-	Arccosecant Function = 9
-	// Arcsecant function
-	Arcsecant Function = 10
-	// Arccotangent function
-	Arccotangent Function = 11
+	// ArcSine function
+	ArcSine Function = 6
+	// ArcCosine function
+	ArcCosine Function = 7
+	// ArcTangent function
+	ArcTangent Function = 8
+	// ArcCosecant function
+	ArcCosecant Function = 9
+	// ArcSecant function
+	ArcSecant Function = 10
+	// ArcCotangent function
+	ArcCotangent Function = 11
 	// HyperbolicSine function
 	HyperbolicSine Function = 12
 	// HyperbolicCosine function
@@ -40,18 +40,18 @@ const (
 	HyperbolicSecant Function = 16
 	// HyperbolicCotangent function
 	HyperbolicCotangent Function = 17
-	// HyperbolicArcsine function
-	HyperbolicArcsine Function = 18
-	// HyperbolicArccosine function
-	HyperbolicArccosine Function = 19
-	// HyperbolicArctangent function
-	HyperbolicArctangent Function = 20
-	// HyperbolicArccosecant function
-	HyperbolicArccosecant Function = 21
-	// HyperbolicArcsecant function
-	HyperbolicArcsecant Function = 22
-	// HyperbolicArccotangent function
-	HyperbolicArccotangent Function = 23
+	// HyperbolicArcSine function
+	HyperbolicArcSine Function = 18
+	// HyperbolicArcCosine function
+	HyperbolicArcCosine Function = 19
+	// HyperbolicArcTangent function
+	HyperbolicArcTangent Function = 20
+	// HyperbolicArcCosecant function
+	HyperbolicArcCosecant Function = 21
+	// HyperbolicArcSecant function
+	HyperbolicArcSecant Function = 22
+	// HyperbolicArcCotangent function
+	HyperbolicArcCotangent Function = 23
 	// Parenthesis is represented as an identity function
 	Parenthesis Function = 24
 	// AbsoluteValue function

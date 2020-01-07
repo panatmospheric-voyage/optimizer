@@ -1,7 +1,6 @@
 unit kg = 1000 * g;
 unit N = kg * m / s^2;
 unit km = 1000 * m;
-delta g = 0.001;
 property gravity = -9.81 m/s;
 assembly pterodactyl_sustainer {
     assembly payload {
@@ -43,14 +42,14 @@ assembly pterodactyl_sustainer {
 property tripoli_cert_needed;
 summarize tripoli_cert_needed;
 if pterodactyl_sustainer.motor.impulse < 160 N*s {
-    tripoli_cert_needed = "None";
+    tripoli_cert_needed = 0;
 } else if pterodactyl_sustainer.motor.impulse < 640 N*s {
-    tripoli_cert_needed = "L1";
+    tripoli_cert_needed = 1;
 } else if pterodactyl_sustainer.motor.impulse < 5120 N*s {
-    tripoli_cert_needed = "L2";
+    tripoli_cert_needed = 2;
 } else if pterodactyl_sustainer.motor.impulse < 40960 N*s {
-    tripoli_cert_needed = "L3";
+    tripoli_cert_needed = 3;
 } else {
-    tripoli_cert_needed = "Class 3 from FAA";
+    tripoli_cert_needed = -1;
 }
 minimize pterodactyl_sustainer.cost;

@@ -8,6 +8,8 @@ type ExpressionUnit struct {
 	// identifier separated by '.' if it is a variable, otherwise there is only
 	// one element)
 	Text []string
+	// Unit is the unit the number has
+	Unit []Unit
 	// Operator that the expression is
 	Operator Operator
 	// Function that the expression is
