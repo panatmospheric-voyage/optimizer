@@ -202,6 +202,13 @@ func initPatterns() {
 			},
 			handler: parseMaximize,
 		},
+		{
+			parts: []statementPart{
+				{lexer.KeywordLiteral, lexer.ZeroKeyword},
+				{lexer.Expression, 0},
+			},
+			handler: parseZero,
+		},
 		// Requirement
 		{
 			parts: []statementPart{

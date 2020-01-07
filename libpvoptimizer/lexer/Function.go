@@ -54,6 +54,4 @@ const (
 	HyperbolicArcCotangent Function = 23
 	// Parenthesis is represented as an identity function
 	Parenthesis Function = 24
-	// AbsoluteValue function
-	AbsoluteValue Function = 25
 )

@@ -176,6 +176,9 @@ func (ev Evaluator) Evaluate(model parser.Model) {
 	case parser.Maximization:
 		fmt.Print("Maximize ")
 		break
+	case parser.Zero:
+		fmt.Print("Zero ")
+		break
 	}
 	fmt.Println(strings.Join(model.Variable, "."))
 }

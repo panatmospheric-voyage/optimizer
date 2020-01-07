@@ -38,6 +38,8 @@ const (
 	MaximizeKeyword = 15
 	// CommaKeyword keyword
 	CommaKeyword = 16
+	// ZeroKeyword keyword
+	ZeroKeyword = 17
 )
 
 var keywordString = []string{
@@ -58,6 +60,7 @@ var keywordString = []string{
 	"MinimizeKeyword",
 	"MaximizeKeyword",
 	"CommaKeyword",
+	"ZeroKeyword",
 }
 
 func (k Keyword) String() string {

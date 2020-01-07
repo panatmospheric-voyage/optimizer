@@ -140,7 +140,7 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 				}
 				lx.state = readParameterName
 				break
-			case "summarize", "minimize", "maximize":
+			case "summarize", "minimize", "maximize", "zero":
 				lexeme = &lexer.Lexeme{
 					Type: lexer.KeywordLiteral,
 				}
@@ -153,6 +153,9 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 					break
 				case "maximize":
 					lexeme.Keyword = lexer.MaximizeKeyword
+					break
+				case "zero":
+					lexeme.Keyword = lexer.ZeroKeyword
 					break
 				default:
 					lx.err(token, errors.MissingCase)

@@ -68,3 +68,7 @@ func parseMinimize(model *parser.Model, statement lexer.Statement, scope []strin
 func parseMaximize(model *parser.Model, statement lexer.Statement, scope []string, e errors.IErrorHandler) {
 	parseOptimization(model, statement, scope, e, "maximize", parser.Maximization)
 }
+
+func parseZero(model *parser.Model, statement lexer.Statement, scope []string, e errors.IErrorHandler) {
+	parseOptimization(model, statement, scope, e, "zero", parser.Zero)
+}

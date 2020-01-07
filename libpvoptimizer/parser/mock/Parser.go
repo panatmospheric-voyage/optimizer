@@ -47,7 +47,6 @@ var (
 		"F_ASECH",
 		"F_ACOTH",
 		"F_IDET",
-		"F_ABS",
 	}
 	conditionals = []string{
 		"C_LT",

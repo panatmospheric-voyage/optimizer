@@ -91,7 +91,7 @@ func (ex *expressionReader) Read(token tokenizer.Token) sublexResult {
 			ex.exprStack.Pop()
 			ex.state = readOperator
 			break
-		case "sin", "cos", "tan", "csc", "sec", "cot", "asin", "acos", "atan", "acsc", "asec", "acot", "sinh", "cosh", "tanh", "csch", "sech", "coth", "asinh", "acosh", "atanh", "acsch", "asech", "acoth", "abs":
+		case "sin", "cos", "tan", "csc", "sec", "cot", "asin", "acos", "atan", "acsc", "asec", "acot", "sinh", "cosh", "tanh", "csch", "sech", "coth", "asinh", "acosh", "atanh", "acsch", "asech", "acoth":
 			var fn lexer.Function
 			switch token.Text {
 			case "sin":
@@ -165,9 +165,6 @@ func (ex *expressionReader) Read(token tokenizer.Token) sublexResult {
 				break
 			case "acoth":
 				fn = lexer.HyperbolicArcCotangent
-				break
-			case "abs":
-				fn = lexer.AbsoluteValue
 				break
 			default:
 				ex.err(token, errors.MissingCase)

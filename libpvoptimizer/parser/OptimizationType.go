@@ -10,4 +10,6 @@ const (
 	Minimization OptimizationType = 1
 	// Maximization optimization
 	Maximization OptimizationType = 2
+	// Zero optimization
+	Zero OptimizationType = 3
 )
