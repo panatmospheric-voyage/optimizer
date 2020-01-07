@@ -39,3 +39,30 @@ const (
 	// CommaKeyword keyword
 	CommaKeyword = 16
 )
+
+var keywordString = []string{
+	"UnitKeyword",
+	"EqualsKeyword",
+	"PropertyKeyword",
+	"AssemblyKeyword",
+	"ParameterKeyword",
+	"SummarizeKeyword",
+	"EnumKeyword",
+	"ValueKeyword",
+	"InclusiveOpen",
+	"ExclusiveOpen",
+	"InclusiveClose",
+	"ExclusiveClose",
+	"AssignArrow",
+	"RequireKeyword",
+	"MinimizeKeyword",
+	"MaximizeKeyword",
+	"CommaKeyword",
+}
+
+func (k Keyword) String() string {
+	if k >= 0 && int(k) < len(keywordString) {
+		return keywordString[k]
+	}
+	return "Unknown Keyword"
+}

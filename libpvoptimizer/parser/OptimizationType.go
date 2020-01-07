@@ -4,8 +4,10 @@ package parser
 type OptimizationType int
 
 const (
+	// NoOptimize optimization
+	NoOptimize OptimizationType = 0
 	// Minimization optimization
-	Minimization OptimizationType = 0
+	Minimization OptimizationType = 1
 	// Maximization optimization
-	Maximization OptimizationType = 1
+	Maximization OptimizationType = 2
 )

@@ -21,32 +21,6 @@ func (ps Parser) Init(lexer libpvoptimizer.ILexer, evaluator libpvoptimizer.IEva
 }
 
 var (
-	keywords = []string{
-		"K_UNIT",
-		"K_EQUALS",
-		"K_PROPERTY",
-		"K_ASSEMBLY",
-		"K_PARAMETER",
-		"K_SUMMARIZE",
-		"K_ENUM",
-		"K_VALUE",
-		"K_INCLUSIVE_OPEN",
-		"K_EXCLUSIVE_OPEN",
-		"K_INCLUSIVE_CLOSE",
-		"K_EXCLUSIVE_CLOSE",
-		"K_ASSIGN_ARROW",
-		"K_REQUIRE",
-		"K_MINIMIZE",
-		"K_MAXIMIZE",
-		"K_COMMA",
-	}
-	operators = []string{
-		"OP_ADD",
-		"OP_SUB",
-		"OP_MUL",
-		"OP_DIV",
-		"OP_EXP",
-	}
 	funcs = []string{
 		"F_SIN",
 		"F_COS",
@@ -109,11 +83,7 @@ func printExpression(expression []lexer.ExpressionUnit) {
 			fmt.Printf("$(%s)", strings.Join(expr.Text, "."))
 			break
 		case lexer.OperatorSymbol:
-			if expr.Operator >= 0 && int(expr.Operator) < len(operators) {
-				fmt.Print(operators[expr.Operator])
-			} else {
-				fmt.Print("OP_?")
-			}
+			fmt.Print(expr.Operator.String())
 			break
 		case lexer.FunctionLiteral:
 			if expr.Function >= 0 && int(expr.Function) < len(funcs) {
@@ -137,11 +107,7 @@ func printStatement(statement lexer.Statement) {
 		fmt.Print("[")
 		switch lexeme.Type {
 		case lexer.KeywordLiteral:
-			if lexeme.Keyword >= 0 && int(lexeme.Keyword) < len(keywords) {
-				fmt.Print(keywords[lexeme.Keyword])
-			} else {
-				fmt.Print("K_?")
-			}
+			fmt.Print(lexeme.Keyword.String())
 			break
 		case lexer.UnitLiteral:
 			for i, unit := range lexeme.Unit {

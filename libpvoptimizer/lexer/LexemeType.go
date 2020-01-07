@@ -21,3 +21,21 @@ const (
 	// Conditional represents a conditional operator
 	Conditional LexemeType = 7
 )
+
+var lexemeTypeString = []string{
+	"KeywordLiteral",
+	"UnitLiteral",
+	"NumberLiteral",
+	"Expression",
+	"GroupBlock",
+	"Identifier",
+	"Switch",
+	"Conditional",
+}
+
+func (t LexemeType) String() string {
+	if t >= 0 && int(t) < len(lexemeTypeString) {
+		return lexemeTypeString[t]
+	}
+	return "Unknown LexemeType"
+}

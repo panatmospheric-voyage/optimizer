@@ -29,6 +29,14 @@ var strings []string = []string{
 	"Expected expression but got '%s'.",
 	"Expected '(' but got '%s'.",
 	"Unexpected '}' in top-level scope.",
+	"Statement cannot start with %s.",
+	"Expected %s but got %s.",
+	"Unable to parse number '%s': %s.",
+	"Unexpected operator %s, expected number or variable.",
+	"Can only perform one optimization.",
+	"Attempt to optimize %s, which is a parameter, not a property.",
+	"Statement %s requires variable as parameter.",
+	"Unknown variable %s.",
 }
 
 const (
@@ -82,6 +90,22 @@ const (
 	ExpectedParenthesis ErrorCode = 23
 	// UnexpectedEndBlock error
 	UnexpectedEndBlock ErrorCode = 24
+	// InvalidStatement error
+	InvalidStatement ErrorCode = 25
+	// NoParserMatch error
+	NoParserMatch ErrorCode = 26
+	// NumberParseError error
+	NumberParseError ErrorCode = 27
+	// UnexpectedOperatorError error
+	UnexpectedOperatorError ErrorCode = 28
+	// MultipleOptimizations error
+	MultipleOptimizations ErrorCode = 29
+	// OptimizeParameter error
+	OptimizeParameter ErrorCode = 30
+	// UnaryExpectedVariable error
+	UnaryExpectedVariable ErrorCode = 31
+	// UnknownVariable error
+	UnknownVariable ErrorCode = 32
 )
 
 // String returns the format string for an error
