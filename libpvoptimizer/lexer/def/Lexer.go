@@ -91,6 +91,7 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 					lx.state = readElse
 					break
 				} else {
+					lx.finishStatement()
 					sc.wasIf = false
 				}
 			}
