@@ -54,4 +54,8 @@ const (
 	HyperbolicArcCotangent Function = 23
 	// Parenthesis is represented as an identity function
 	Parenthesis Function = 24
+	// Exponential function
+	Exponential Function = 25
+	// Logarithm function (natural base)
+	Logarithm Function = 26
 )
