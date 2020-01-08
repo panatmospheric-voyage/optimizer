@@ -57,10 +57,10 @@ func parseOptimization(model *parser.Model, statement lexer.Statement, scope []s
 				err(statement, e, errors.OptimizeParameter, strings.Join(name, "."))
 			}
 		} else {
-			mean, er := parser.ParseNumber(statement.Lexemes[2].Name)
+			min, er := parser.ParseNumber(statement.Lexemes[2].Name)
 			if er != nil {
 				err(statement, e, errors.NumberParseError, statement.Lexemes[2].Name, er)
-				mean = 1
+				min = 0.00001
 			}
 			acc, er := parser.ParseNumber(statement.Lexemes[4].Name)
 			if er != nil {
@@ -83,13 +83,17 @@ func parseOptimization(model *parser.Model, statement lexer.Statement, scope []s
 					}
 				}
 			}
+			l := statement.Lexemes[len(statement.Lexemes)-1]
 			model.Optimization = parser.Optimization{
 				Type:       t,
 				Variable:   name,
-				Mean:       mean,
+				Minimum:    min,
 				Accuracy:   acc,
 				Iterations: int(iters),
 				Seed:       seed,
+				LineNo:     l.LineNo,
+				CharNo:     l.CharNo,
+				FileName:   l.FileName,
 			}
 		}
 	}

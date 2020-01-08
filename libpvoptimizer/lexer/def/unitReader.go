@@ -1,7 +1,7 @@
 package def
 
 import (
-	"strconv"
+	"fmt"
 
 	lexer ".."
 	"../../errors"
@@ -41,7 +41,7 @@ func (ur *unitReader) Read(token tokenizer.Token) sublexResult {
 		if isIdentifier(token.Text) {
 			*ur.target = append(*ur.target, lexer.Unit{
 				Name:     token.Text,
-				Power:    1,
+				Power:    "1",
 				LineNo:   token.LineNo,
 				CharNo:   token.CharNo,
 				FileName: token.FileName,
@@ -73,16 +73,15 @@ func (ur *unitReader) Read(token tokenizer.Token) sublexResult {
 		}
 		break
 	case readUnitPower:
-		i, err := strconv.ParseInt(token.Text, 10, 32)
-		if err != nil {
-			ur.err(token, errors.ExpectedNumber, token.Text)
-			return slError
-		}
 		u := &(*ur.target)[len(*ur.target)-1]
 		if ur.inverted {
-			u.Power = -int(i)
+			if token.Text[0] == '-' {
+				u.Power = token.Text[1:]
+			} else {
+				u.Power = fmt.Sprintf("-%s", token.Text)
+			}
 		} else {
-			u.Power = int(i)
+			u.Power = token.Text
 		}
 		ur.state = afterUnitPower
 		break

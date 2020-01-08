@@ -19,7 +19,7 @@ func parsePropertyDefinition(model *parser.Model, statement lexer.Statement, sco
 				Type: parser.Variable,
 				Name: name,
 			},
-			RHS: parseExpression(statement.Lexemes[3].Expression, model, e),
+			RHS: parseExpression(statement.Lexemes[3].Expression, model, e, scope),
 		},
 		Summarize: false,
 	})

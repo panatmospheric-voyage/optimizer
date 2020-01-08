@@ -39,6 +39,13 @@ var strings []string = []string{
 	"Unknown variable %s.",
 	"Expected '[' but got '%s'.",
 	"Expected ']' or ',' but got '%s'.",
+	"Cannot evaluate derivative.",
+	"Cannot evaluate optimization objective function.",
+	"Cannot solve equation for %s.",
+	"Cannot add quantity of unit '%s' with quantity of unit '%s'.",
+	"Cannot subtract quantity of unit '%s' with quantity of unit '%s'.",
+	"Expected unitless quantity but got quantity of unit '%s'.",
+	"Unable to solve fully the model.",
 }
 
 const (
@@ -112,6 +119,20 @@ const (
 	ExpectedOpenSquare ErrorCode = 33
 	// ExpectedEndSquareOrComma error
 	ExpectedEndSquareOrComma ErrorCode = 34
+	// CannotEvaluateDerivative error
+	CannotEvaluateDerivative ErrorCode = 35
+	// CannotEvaluateObjective error
+	CannotEvaluateObjective ErrorCode = 36
+	// CannotSolveEquation error
+	CannotSolveEquation ErrorCode = 37
+	// AddUnitMismatch error
+	AddUnitMismatch ErrorCode = 38
+	// SubtractUnitMismatch error
+	SubtractUnitMismatch ErrorCode = 39
+	// ShouldBeUnitless error
+	ShouldBeUnitless ErrorCode = 40
+	// UnableToSolveFully error
+	UnableToSolveFully ErrorCode = 41
 )
 
 // String returns the format string for an error

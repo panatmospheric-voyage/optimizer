@@ -6,12 +6,19 @@ type Optimization struct {
 	Type OptimizationType
 	// Variable to optimize
 	Variable []string
-	// Mean is the positive mean of optimization variable
-	Mean Number
+	// Minimum is the smallest change that needs to be observed in any variables
+	Minimum Number
 	// Accuracy to solve to
 	Accuracy Number
 	// Iterations is the number of times to run the gradient descent algorithm
 	Iterations int
 	// Seed for the random number generator
 	Seed int64
+	// LineNo contains the line number the token was found on
+	LineNo int
+	// CharNo contains the character number in the line of the start of the
+	// token
+	CharNo int
+	// FileName is the name of the file the token was found in
+	FileName string
 }

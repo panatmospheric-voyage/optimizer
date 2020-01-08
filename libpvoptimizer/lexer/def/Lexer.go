@@ -226,7 +226,7 @@ func (lx *Lexer) Stream(token tokenizer.Token, id int) {
 					Type: lexer.UnitLiteral,
 					Unit: []lexer.Unit{{
 						Name:     token.Text,
-						Power:    1,
+						Power:    "1",
 						LineNo:   token.LineNo,
 						CharNo:   token.CharNo,
 						FileName: token.FileName,

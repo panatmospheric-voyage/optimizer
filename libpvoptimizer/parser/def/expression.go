@@ -6,7 +6,7 @@ import (
 	"../../lexer"
 )
 
-func parseExpressionSingle(expr lexer.ExpressionUnit, model *parser.Model, err errors.IErrorHandler) parser.Expression {
+func parseExpressionSingle(expr lexer.ExpressionUnit, model *parser.Model, err errors.IErrorHandler, scope []string) parser.Expression {
 	switch expr.Type {
 	case lexer.ExpressionNumber:
 		n, e := parser.ParseNumber(expr.Text[0])
@@ -21,9 +21,12 @@ func parseExpressionSingle(expr lexer.ExpressionUnit, model *parser.Model, err e
 		}
 		if len(expr.Unit) > 0 {
 			return parser.Expression{
-				Type:  parser.Constant,
-				Value: n,
-				Unit:  getUnit(model, expr.Unit),
+				Type:     parser.Constant,
+				Value:    n,
+				Unit:     getUnit(model, expr.Unit, err),
+				LineNo:   expr.LineNo,
+				CharNo:   expr.CharNo,
+				FileName: expr.FileName,
 			}
 		}
 		return parser.Expression{
@@ -32,11 +35,42 @@ func parseExpressionSingle(expr lexer.ExpressionUnit, model *parser.Model, err e
 			Unit: parser.Unit{
 				Parts: []parser.CompositeUnitPart{},
 			},
+			LineNo:   expr.LineNo,
+			CharNo:   expr.CharNo,
+			FileName: expr.FileName,
 		}
 	case lexer.Variable:
+		found := false
+		scopeLocal := append(scope, expr.Text...)
+		for _, p := range model.UniversalProperties {
+			if equals(p.Name, scopeLocal) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			for _, p := range model.Parameters {
+				if equals(p.Name, scopeLocal) {
+					found = true
+					break
+				}
+			}
+		}
+		if found {
+			return parser.Expression{
+				Type:     parser.Variable,
+				Name:     scopeLocal,
+				LineNo:   expr.LineNo,
+				CharNo:   expr.CharNo,
+				FileName: expr.FileName,
+			}
+		}
 		return parser.Expression{
-			Type: parser.Variable,
-			Name: expr.Text,
+			Type:     parser.Variable,
+			Name:     expr.Text,
+			LineNo:   expr.LineNo,
+			CharNo:   expr.CharNo,
+			FileName: expr.FileName,
 		}
 	case lexer.OperatorSymbol:
 		err.Handle(errors.Error{
@@ -48,11 +82,14 @@ func parseExpressionSingle(expr lexer.ExpressionUnit, model *parser.Model, err e
 		})
 		break
 	case lexer.FunctionLiteral:
-		e := parseExpression(expr.SubExpression, model, err)
+		e := parseExpression(expr.SubExpression, model, err, scope)
 		return parser.Expression{
 			Type:     parser.Function,
 			LHS:      &e,
 			Function: expr.Function,
+			LineNo:   expr.LineNo,
+			CharNo:   expr.CharNo,
+			FileName: expr.FileName,
 		}
 	default:
 		err.Handle(errors.Error{
@@ -70,31 +107,37 @@ func parseExpressionSingle(expr lexer.ExpressionUnit, model *parser.Model, err e
 		Unit: parser.Unit{
 			Parts: []parser.CompositeUnitPart{},
 		},
+		LineNo:   expr.LineNo,
+		CharNo:   expr.CharNo,
+		FileName: expr.FileName,
 	}
 }
 
-func parseExpressionExp(expr []lexer.ExpressionUnit, model *parser.Model, err errors.IErrorHandler) parser.Expression {
+func parseExpressionExp(expr []lexer.ExpressionUnit, model *parser.Model, err errors.IErrorHandler, scope []string) parser.Expression {
 	var base *parser.Expression
 	it := &base
 	var group lexer.ExpressionUnit
 	for _, e := range expr {
 		if e.Type == lexer.OperatorSymbol && e.Operator == lexer.Exponentiation {
-			lhs := parseExpressionSingle(group, model, err)
+			lhs := parseExpressionSingle(group, model, err, scope)
 			*it = &parser.Expression{
-				Type: parser.Exponentiation,
-				LHS:  &lhs,
+				Type:     parser.Exponentiation,
+				LHS:      &lhs,
+				LineNo:   e.LineNo,
+				CharNo:   e.CharNo,
+				FileName: e.FileName,
 			}
 			it = &(*it).RHS
 		} else {
 			group = e
 		}
 	}
-	rhs := parseExpressionSingle(group, model, err)
+	rhs := parseExpressionSingle(group, model, err, scope)
 	*it = &rhs
 	return *base
 }
 
-func parseExpressionMult(expr []lexer.ExpressionUnit, model *parser.Model, err errors.IErrorHandler) parser.Expression {
+func parseExpressionMult(expr []lexer.ExpressionUnit, model *parser.Model, err errors.IErrorHandler, scope []string) parser.Expression {
 	var base *parser.Expression
 	it := &base
 	group := []lexer.ExpressionUnit{}
@@ -112,11 +155,14 @@ func parseExpressionMult(expr []lexer.ExpressionUnit, model *parser.Model, err e
 				} else {
 					t = parser.Division
 				}
-				lhs := parseExpressionExp(group, model, err)
+				lhs := parseExpressionExp(group, model, err, scope)
 				group = []lexer.ExpressionUnit{}
 				*it = &parser.Expression{
-					Type: t,
-					LHS:  &lhs,
+					Type:     t,
+					LHS:      &lhs,
+					LineNo:   e.LineNo,
+					CharNo:   e.CharNo,
+					FileName: e.FileName,
 				}
 				it = &(*it).RHS
 				if !iMult {
@@ -127,12 +173,12 @@ func parseExpressionMult(expr []lexer.ExpressionUnit, model *parser.Model, err e
 		}
 		group = append(group, e)
 	}
-	rhs := parseExpressionExp(group, model, err)
+	rhs := parseExpressionExp(group, model, err, scope)
 	*it = &rhs
 	return *base
 }
 
-func parseExpression(expr []lexer.ExpressionUnit, model *parser.Model, err errors.IErrorHandler) parser.Expression {
+func parseExpression(expr []lexer.ExpressionUnit, model *parser.Model, err errors.IErrorHandler, scope []string) parser.Expression {
 	var base *parser.Expression
 	it := &base
 	group := []lexer.ExpressionUnit{}
@@ -150,11 +196,14 @@ func parseExpression(expr []lexer.ExpressionUnit, model *parser.Model, err error
 				} else {
 					t = parser.Subtraction
 				}
-				lhs := parseExpressionMult(group, model, err)
+				lhs := parseExpressionMult(group, model, err, scope)
 				group = []lexer.ExpressionUnit{}
 				*it = &parser.Expression{
-					Type: t,
-					LHS:  &lhs,
+					Type:     t,
+					LHS:      &lhs,
+					LineNo:   e.LineNo,
+					CharNo:   e.CharNo,
+					FileName: e.FileName,
 				}
 				it = &(*it).RHS
 				if !iPlus {
@@ -165,7 +214,7 @@ func parseExpression(expr []lexer.ExpressionUnit, model *parser.Model, err error
 		}
 		group = append(group, e)
 	}
-	rhs := parseExpressionMult(group, model, err)
+	rhs := parseExpressionMult(group, model, err, scope)
 	*it = &rhs
 	return *base
 }

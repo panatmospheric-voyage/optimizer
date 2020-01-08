@@ -5,7 +5,7 @@ type Unit struct {
 	// The name of the unit
 	Name string
 	// The exponent on the unit
-	Power int
+	Power string
 	// LineNo contains the line number the token was found on
 	LineNo int
 	// CharNo contains the character number in the line of the start of the

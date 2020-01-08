@@ -5,16 +5,15 @@ import (
 	"fmt"
 	"os"
 
-	"../libpvoptimizer/evaluator/mock"
 	"../libpvoptimizer/pipeline"
+	"../libpvoptimizer/reporter/mock"
 	resultwriter "../libpvoptimizer/resultwriter/def"
 	sourcereader "../libpvoptimizer/sourcereader/def"
 )
 
 func main() {
-	fmt.Println("Hi")
 	p := pipeline.CreateDefault()
-	p.Evaluator = new(mock.Evaluator)
+	p.Reporter = new(mock.Reporter)
 	outFile := flag.String("o", "", "Output file")
 	flag.Parse()
 	if *outFile != "" {

@@ -24,22 +24,13 @@ var (
 	compOps = []string{"<", "<=", ">", ">=", "==", "!="}
 )
 
-func printUnit(unit parser.Unit) {
-	for i, u := range unit.Parts {
-		if i != 0 {
-			fmt.Print("*")
-		}
-		fmt.Printf("%s^%d", u.Unit.Name, u.Power)
-	}
-}
-
-func printExpression(expr parser.Expression) {
+// PrintExpression prints an expression to the console
+func PrintExpression(expr parser.Expression) {
 	switch expr.Type {
 	case parser.Constant:
 		fmt.Printf("%f", expr.Value)
 		if len(expr.Unit.Parts) > 0 {
-			fmt.Print(" ")
-			printUnit(expr.Unit)
+			fmt.Printf(" %s", expr.Unit)
 		}
 		break
 	case parser.Variable:
@@ -47,42 +38,42 @@ func printExpression(expr parser.Expression) {
 		break
 	case parser.Addition:
 		fmt.Print("(")
-		printExpression(*expr.LHS)
+		PrintExpression(*expr.LHS)
 		fmt.Print(" + ")
-		printExpression(*expr.RHS)
+		PrintExpression(*expr.RHS)
 		fmt.Print(")")
 		break
 	case parser.Subtraction:
 		fmt.Print("(")
-		printExpression(*expr.LHS)
+		PrintExpression(*expr.LHS)
 		fmt.Print(" - ")
-		printExpression(*expr.RHS)
+		PrintExpression(*expr.RHS)
 		fmt.Print(")")
 		break
 	case parser.Multiplication:
 		fmt.Print("(")
-		printExpression(*expr.LHS)
+		PrintExpression(*expr.LHS)
 		fmt.Print(" * ")
-		printExpression(*expr.RHS)
+		PrintExpression(*expr.RHS)
 		fmt.Print(")")
 		break
 	case parser.Division:
 		fmt.Print("(")
-		printExpression(*expr.LHS)
+		PrintExpression(*expr.LHS)
 		fmt.Print(" / ")
-		printExpression(*expr.RHS)
+		PrintExpression(*expr.RHS)
 		fmt.Print(")")
 		break
 	case parser.Exponentiation:
 		fmt.Print("(")
-		printExpression(*expr.LHS)
+		PrintExpression(*expr.LHS)
 		fmt.Print(" ^ ")
-		printExpression(*expr.RHS)
+		PrintExpression(*expr.RHS)
 		fmt.Print(")")
 		break
 	case parser.Function:
 		fmt.Printf("<func%d>(", expr.Function)
-		printExpression(*expr.LHS)
+		PrintExpression(*expr.LHS)
 		fmt.Print(")")
 		break
 	default:
@@ -98,9 +89,9 @@ func printProperties(props []parser.Property, indent string) {
 			fmt.Print(" [summarize]")
 		}
 		fmt.Print(": ")
-		printExpression(p.Definition.LHS)
+		PrintExpression(p.Definition.LHS)
 		fmt.Print(" = ")
-		printExpression(p.Definition.RHS)
+		PrintExpression(p.Definition.RHS)
 		fmt.Println()
 	}
 }
@@ -117,9 +108,7 @@ func (ev Evaluator) Evaluate(model parser.Model) {
 	fmt.Println()
 	fmt.Println("Unit map:")
 	for _, u := range model.UnitEquivalents {
-		fmt.Printf("    %s = %f ", u.Unit.Name, u.Factor)
-		printUnit(u.EquivalentUnit)
-		fmt.Println()
+		fmt.Printf("    %s = %f %s\n", u.Unit.Name, u.Factor, u.EquivalentUnit)
 	}
 	fmt.Println()
 	fmt.Println("Parameters:")
@@ -135,8 +124,7 @@ func (ev Evaluator) Evaluate(model parser.Model) {
 		} else {
 			c = ')'
 		}
-		fmt.Printf("    %s %c%f, %f%c ", strings.Join(p.Name, "."), o, p.Minimum, p.Maximum, c)
-		printUnit(p.Unit)
+		fmt.Printf("    %s %c%f, %f%c %s", strings.Join(p.Name, "."), o, p.Minimum, p.Maximum, c, p.Unit)
 		if p.Summarize {
 			fmt.Print(" [summarize]")
 		}
@@ -162,7 +150,7 @@ func (ev Evaluator) Evaluate(model parser.Model) {
 	fmt.Println("Requirements:")
 	for _, r := range model.Requirements {
 		fmt.Printf("    %s %s ", strings.Join(r.Name, "."), compOps[r.Condition])
-		printExpression(r.Value)
+		PrintExpression(r.Value)
 		fmt.Println()
 	}
 	fmt.Println()
@@ -181,5 +169,5 @@ func (ev Evaluator) Evaluate(model parser.Model) {
 		break
 	}
 	fmt.Println(strings.Join(model.Optimization.Variable, "."))
-	fmt.Printf("Mean = %f, Accuracy = %f, Iterations = %d, Seed = %d\n", model.Optimization.Mean, model.Optimization.Accuracy, model.Optimization.Iterations, model.Optimization.Seed)
+	fmt.Printf("Minimum = %f, Accuracy = %f, Iterations = %d, Seed = %d\n", model.Optimization.Minimum, model.Optimization.Accuracy, model.Optimization.Iterations, model.Optimization.Seed)
 }

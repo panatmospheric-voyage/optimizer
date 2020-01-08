@@ -17,7 +17,7 @@ func parseParameter(model *parser.Model, statement lexer.Statement, scope []stri
 	}
 	var u parser.Unit
 	if len(statement.Lexemes) == 8 {
-		u = getUnit(model, statement.Lexemes[7].Unit)
+		u = getUnit(model, statement.Lexemes[7].Unit, e)
 	} else {
 		u = parser.Unit{
 			Parts: []parser.CompositeUnitPart{},
