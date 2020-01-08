@@ -118,15 +118,19 @@ func (gd *gradientDescent) run() (parser.Number, parser.Number) {
 		n := &gd.opt.Properties[i].Value
 		p := gd.model.Parameters[i]
 		*n += g
-		if *n <= p.Minimum && !p.MinimumInclude {
-			*n = p.Minimum + gd.model.Optimization.Minimum
-		} else if *n < p.Minimum {
-			*n = p.Minimum
+		min := p.Minimum
+		if !p.MinimumInclude {
+			min += gd.model.Optimization.Minimum
 		}
-		if *n >= p.Maximum && !p.MaximumInclude {
-			*n = p.Maximum + gd.model.Optimization.Minimum
-		} else if *n > p.Maximum {
-			*n = p.Maximum
+		if *n < min {
+			*n = min + (min - *n)
+		}
+		max := p.Maximum
+		if !p.MaximumInclude {
+			max -= gd.model.Optimization.Minimum
+		}
+		if *n > max {
+			*n = max - (*n - max)
 		}
 	}
 	v, _ := evaluate(gd.expr, gd.opt, gd.model, gd.handler, false)
