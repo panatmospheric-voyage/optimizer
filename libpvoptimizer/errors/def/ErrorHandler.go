@@ -12,6 +12,9 @@ type ErrorHandler struct{}
 
 // Handle the error
 func (ErrorHandler) Handle(e errors.Error) {
+	if e.Code == errors.MissingCase {
+		fmt.Print("")
+	}
 	if e.FileName != "" {
 		if e.LineNo >= 0 {
 			if e.CharNo >= 0 {
