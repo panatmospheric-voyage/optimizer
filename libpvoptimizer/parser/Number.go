@@ -14,6 +14,11 @@ func ParseNumber(str string) (Number, error) {
 	return Number(f), e
 }
 
+// String converts a Number to a string
+func (n Number) String() string {
+	return strconv.FormatFloat(float64(n), 'f', -1, 64)
+}
+
 // Pow raises the number to a power
 func (n Number) Pow(ex Number) Number {
 	return Number(math.Pow(float64(n), float64(ex)))

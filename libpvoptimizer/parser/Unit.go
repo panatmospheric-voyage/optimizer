@@ -17,7 +17,7 @@ func (u Unit) String() string {
 		if p.Power == 1 {
 			strs[i] = p.Unit.Name
 		} else {
-			strs[i] = fmt.Sprintf("%s^%f", p.Unit.Name, p.Power)
+			strs[i] = fmt.Sprintf("%s^%s", p.Unit.Name, p.Power)
 		}
 	}
 	return strings.Join(strs, "*")

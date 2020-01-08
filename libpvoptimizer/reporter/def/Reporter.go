@@ -39,9 +39,9 @@ func printFullReport(b *strings.Builder, node node, indent string) {
 		}
 		fmt.Fprintf(b, "%s</%s>\n", indent, node.name)
 	} else if len(node.unit.Parts) > 0 {
-		fmt.Fprintf(b, "%s<%s units=\"%s\">%f</%s>\n", indent, node.name, node.unit, node.value, node.name)
+		fmt.Fprintf(b, "%s<%s units=\"%s\">%s</%s>\n", indent, node.name, node.unit, node.value, node.name)
 	} else {
-		fmt.Fprintf(b, "%s<%s>%f</%s>\n", indent, node.name, node.value, node.name)
+		fmt.Fprintf(b, "%s<%s>%s</%s>\n", indent, node.name, node.value, node.name)
 	}
 }
 
@@ -54,7 +54,7 @@ func (rp Reporter) Report(model evaluator.OptimizedModel) {
 	nodes := []node{}
 	for _, p := range model.Properties {
 		if p.Summarize {
-			fmt.Fprintf(&b, "        %s = %f %s\n", strings.Join(p.Name, "."), p.Value, p.Unit)
+			fmt.Fprintf(&b, "        %s = %s %s\n", strings.Join(p.Name, "."), p.Value, p.Unit)
 		}
 		var n *node
 		l := &nodes
