@@ -46,6 +46,7 @@ var strings []string = []string{
 	"Cannot subtract quantity of unit '%s' with quantity of unit '%s'.",
 	"Expected unitless quantity but got quantity of unit '%s'.",
 	"Unable to solve fully the model.",
+	"Error writing file: %s.",
 }
 
 const (
@@ -133,6 +134,8 @@ const (
 	ShouldBeUnitless ErrorCode = 40
 	// UnableToSolveFully error
 	UnableToSolveFully ErrorCode = 41
+	// FileWriteError error
+	FileWriteError ErrorCode = 42
 )
 
 // String returns the format string for an error
