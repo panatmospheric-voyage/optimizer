@@ -6,14 +6,14 @@ import (
 	"os"
 
 	"../libpvoptimizer/pipeline"
-	"../libpvoptimizer/reporter/mock"
 	resultwriter "../libpvoptimizer/resultwriter/def"
+	"../libpvoptimizer/resultwriter/mock"
 	sourcereader "../libpvoptimizer/sourcereader/def"
 )
 
 func main() {
 	p := pipeline.CreateDefault()
-	p.Reporter = new(mock.Reporter)
+	p.ResultWriter = new(mock.ResultWriter)
 	outFile := flag.String("o", "", "Output file")
 	flag.Parse()
 	if *outFile != "" {
